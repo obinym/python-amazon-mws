@@ -35,6 +35,7 @@ __all__ = [
     'Recommendations',
     'Sellers',
     'Finances',
+    'MerchantFulfillment'
 ]
 
 # See https://images-na.ssl-images-amazon.com/images/G/01/mwsportal/doc/en_US/bde/MWSDeveloperGuide._V357736853_.pdf
@@ -578,6 +579,75 @@ class Orders(MWS):
         )
         return self.list_order_items(next_token=token)
 
+class MerchantFulfillment(MWS):
+    """
+    Amazon Orders API
+    """
+    URI = "/MerchantFulfillment/2015-06-01"
+    VERSION = "2015-06-01"
+    NAMESPACE = '{https://mws.amazonservices.com/MerchantFulfillment/2015-06-01}'
+    def get_shipping_service(self, amazon_order_id, amazon_pack_length, amazon_pack_width, amazon_pack_height, amazon_pack_dim_unit,
+        amazon_pack_weight, amazon_pack_weight_unit, amazon_from_name, amazon_from_street, amazon_from_city, 
+        amazon_from_pcode, amazon_from_ccode, amazon_from_email, amazon_from_phone, amazon_delivery_exp, 
+        amazon_pickup, amazon_pack_value_curr, amazon_pack_value, first_order_item_id, first_item_quantity
+        ):
+        data = {
+            'Action':'GetEligibleShippingServices',
+            'ShipmentRequestDetails.AmazonOrderId':amazon_order_id,
+            'ShipmentRequestDetails.PackageDimensions.Length':amazon_pack_length,
+            'ShipmentRequestDetails.PackageDimensions.Width':amazon_pack_width,
+            'ShipmentRequestDetails.PackageDimensions.Height':amazon_pack_height,
+            'ShipmentRequestDetails.PackageDimensions.Unit':amazon_pack_dim_unit,
+            'ShipmentRequestDetails.Weight.Value':amazon_pack_weight,
+            'ShipmentRequestDetails.Weight.Unit':amazon_pack_weight_unit,
+            'ShipmentRequestDetails.ShipFromAddress.Name':amazon_from_name,
+            'ShipmentRequestDetails.ShipFromAddress.AddressLine1':amazon_from_street,
+            'ShipmentRequestDetails.ShipFromAddress.City':amazon_from_city,
+            'ShipmentRequestDetails.ShipFromAddress.PostalCode':amazon_from_pcode,
+            'ShipmentRequestDetails.ShipFromAddress.CountryCode':amazon_from_ccode,
+            'ShipmentRequestDetails.ShipFromAddress.Email':amazon_from_email,
+            'ShipmentRequestDetails.ShipFromAddress.Phone':amazon_from_phone,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeliveryExperience':amazon_delivery_exp,
+            'ShipmentRequestDetails.ShippingServiceOptions.CarrierWillPickUp':amazon_pickup,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeclaredValue.CurrencyCode':amazon_pack_value_curr,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeclaredValue.Amount':amazon_pack_value,
+            'ShipmentRequestDetails.ItemList.Item.1.OrderItemId':first_order_item_id,
+            'ShipmentRequestDetails.ItemList.Item.1.Quantity':first_item_quantity
+        }
+        return self.make_request(data)
+
+    def create_shipment(self, amazon_order_id, amazon_pack_length, amazon_pack_width, amazon_pack_height, amazon_pack_dim_unit,
+        amazon_pack_weight, amazon_pack_weight_unit, amazon_from_name, amazon_from_street, amazon_from_city, 
+        amazon_from_pcode, amazon_from_ccode, amazon_from_email, amazon_from_phone, amazon_delivery_exp, 
+        amazon_pickup, amazon_pack_value_curr, amazon_pack_value, first_order_item_id, first_item_quantity,
+        amazon_ship_service_id, amazon_label_format
+        ):
+        data = {
+            'Action':'CreateShipment',
+            'ShipmentRequestDetails.AmazonOrderId':amazon_order_id,
+            'ShipmentRequestDetails.PackageDimensions.Length':amazon_pack_length,
+            'ShipmentRequestDetails.PackageDimensions.Width':amazon_pack_width,
+            'ShipmentRequestDetails.PackageDimensions.Height':amazon_pack_height,
+            'ShipmentRequestDetails.PackageDimensions.Unit':amazon_pack_dim_unit,
+            'ShipmentRequestDetails.Weight.Value':amazon_pack_weight,
+            'ShipmentRequestDetails.Weight.Unit':amazon_pack_weight_unit,
+            'ShipmentRequestDetails.ShipFromAddress.Name':amazon_from_name,
+            'ShipmentRequestDetails.ShipFromAddress.AddressLine1':amazon_from_street,
+            'ShipmentRequestDetails.ShipFromAddress.City':amazon_from_city,
+            'ShipmentRequestDetails.ShipFromAddress.PostalCode':amazon_from_pcode,
+            'ShipmentRequestDetails.ShipFromAddress.CountryCode':amazon_from_ccode,
+            'ShipmentRequestDetails.ShipFromAddress.Email':amazon_from_email,
+            'ShipmentRequestDetails.ShipFromAddress.Phone':amazon_from_phone,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeliveryExperience':amazon_delivery_exp,
+            'ShipmentRequestDetails.ShippingServiceOptions.CarrierWillPickUp':amazon_pickup,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeclaredValue.CurrencyCode':amazon_pack_value_curr,
+            'ShipmentRequestDetails.ShippingServiceOptions.DeclaredValue.Amount':amazon_pack_value,
+            'ShipmentRequestDetails.ItemList.Item.1.OrderItemId':first_order_item_id,
+            'ShipmentRequestDetails.ItemList.Item.1.Quantity':first_item_quantity,
+            'ShippingServiceId':amazon_ship_service_id,
+            'ShipmentRequestDetails.ShippingServiceOptions.LabelFormat':amazon_label_format
+        }
+        return self.make_request(data)
 
 class Products(MWS):
     """
