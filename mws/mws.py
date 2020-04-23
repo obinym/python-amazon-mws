@@ -620,7 +620,7 @@ class MerchantFulfillment(MWS):
         amazon_pack_weight, amazon_pack_weight_unit, amazon_from_name, amazon_from_street, amazon_from_city, 
         amazon_from_pcode, amazon_from_ccode, amazon_from_email, amazon_from_phone, amazon_delivery_exp, 
         amazon_pickup, amazon_pack_value_curr, amazon_pack_value, first_order_item_id, first_item_quantity,
-        amazon_ship_service_id, amazon_label_format
+        amazon_ship_service_id, amazon_ship_service_offer_id, amazon_label_format
         ):
         data = {
             'Action':'CreateShipment',
@@ -645,6 +645,7 @@ class MerchantFulfillment(MWS):
             'ShipmentRequestDetails.ItemList.Item.1.OrderItemId':first_order_item_id,
             'ShipmentRequestDetails.ItemList.Item.1.Quantity':first_item_quantity,
             'ShippingServiceId':amazon_ship_service_id,
+            'ShippingServiceOfferId':amazon_ship_service_offer_id,
             'ShipmentRequestDetails.ShippingServiceOptions.LabelFormat':amazon_label_format
         }
         return self.make_request(data)
